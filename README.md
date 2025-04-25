@@ -1,12 +1,6 @@
-# Biblioteca
-A proposta é um sistema de biblioteca simples de gerenciamento de livros, autores, empréstimos, usuários e funcionarios explorando desde a modelagem de dados, normalização, relacionamentos entre tabelas, até a criação de queries SQL eficientes utilizando PostgreSQL.
+# 📚 Biblioteca - Visão Geral do Sistema
 
-# Modelagem do Banco
-![Diagrama UML do Banco de Dados](uml_biblioteca_pg.png)
-
-# 📚 Visão Geral do Sistema
-
-O sistema gerencia toda a operação de uma biblioteca, desde o cadastro de livros até o controle de empréstimos.  
+O sistema gerencia toda a operação de uma biblioteca, desde o cadastro de livros até o controle de empréstimos, com robustez e flexibilidade para crescer conforme necessário.
 
 ---
 
@@ -96,5 +90,5 @@ O sistema gerencia toda a operação de uma biblioteca, desde o cadastro de livr
 
 ---
 
-> Esta estrutura permite que você desenvolva um sistema completo de gerenciamento de biblioteca, desde o cadastro de acervo até o controle de circulação, com robustez e flexibilidade para crescer conforme necessário.
-
+# Modelagem do Banco
+![Diagrama UML do Banco de Dados](uml_biblioteca_pg.png)
