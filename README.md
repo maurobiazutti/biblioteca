@@ -90,5 +90,5 @@ O sistema gerencia toda a operação de uma biblioteca, desde o cadastro de livr
 
 ---
 
-# Modelagem do Banco
-![Diagrama UML do Banco de Dados](uml_biblioteca_pg.png)
+# 🛢️ Modelagem do Banco
+![Diagrama UML do Banco de Dados](uml_biblioteca_v2.png)
