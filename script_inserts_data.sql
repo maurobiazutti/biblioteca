@@ -61,6 +61,21 @@ INSERT INTO book_copies (book_id, library_id, acquisition_date, status, location
 (9, 3, '2021-02-09', 'available', 'Estante C5'),
 (10,3, '2021-02-10', 'available', 'Estante C6');
 
+-- Relacionando livros e autores
+INSERT INTO book_authors (author_id, book_id) VALUES
+(1, 1), -- João escreveu "O Segredo das Pedras"
+(2, 2), -- Maria escreveu "O Mar Invisível"
+(3, 3), -- Carlos escreveu "As Montanhas Sonham"
+(4, 4), -- Ana escreveu "O Céu de Andrômeda"
+(5, 5), -- Pedro escreveu "Reflexos do Amanhã"
+(6, 6), -- Laura escreveu "Horizontes Distantes"
+(7, 7), -- Paulo escreveu "Noite Sem Fim"
+(8, 8), -- Fernanda escreveu "Asas do Tempo"
+(1, 9), -- João também escreveu "O Mistério do Lago"
+(2, 10), -- Maria também escreveu "Sombras e Luzes"
+(3, 1), -- Carlos também colaborou em "O Segredo das Pedras"
+(4, 5); -- Ana também colaborou em "Reflexos do Amanhã"
+
 -- Inserts para categories
 INSERT INTO categories (category, description) VALUES
 ('Ficção Científica', 'Livros de ficção com temas científicos'),
