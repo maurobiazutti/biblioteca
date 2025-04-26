@@ -1,4 +1,21 @@
-CREATE TABLE address (
+-- Arquivo pronto para rodar: Modelo Biblioteca
+
+-- DROP tables if exist to reset schema cleanly
+DROP TABLE IF EXISTS loan_items;
+DROP TABLE IF EXISTS loans;
+DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS book_categories;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS book_authors;
+DROP TABLE IF EXISTS authors;
+DROP TABLE IF EXISTS book_copies;
+DROP TABLE IF EXISTS books;
+DROP TABLE IF EXISTS libraries;
+DROP TABLE IF EXISTS addresses;
+
+-- Cria tabela de endereços
+CREATE TABLE addresses (
   id SERIAL PRIMARY KEY,
   number VARCHAR(10) NOT NULL,
   street VARCHAR(100) NOT NULL,
@@ -10,9 +27,10 @@ CREATE TABLE address (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE library (
+-- Cria tabela de bibliotecas
+CREATE TABLE libraries (
   id SERIAL PRIMARY KEY,
-  address_id INTEGER NOT NULL REFERENCES address(id) ON DELETE RESTRICT,
+  address_id INTEGER NOT NULL REFERENCES addresses(id) ON DELETE RESTRICT,
   fantasy_name VARCHAR(100) NOT NULL,
   cnpj VARCHAR(20) UNIQUE NOT NULL,
   phone VARCHAR(20) NOT NULL,
@@ -21,8 +39,8 @@ CREATE TABLE library (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela para armazenar informações dos livros (títulos)
-CREATE TABLE book (
+-- Cria tabela de livros
+CREATE TABLE books (
   id SERIAL PRIMARY KEY,
   isbn VARCHAR(20) UNIQUE NOT NULL,
   title VARCHAR(200) NOT NULL,
@@ -34,19 +52,20 @@ CREATE TABLE book (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela para controlar os exemplares físicos de cada livro
-CREATE TABLE book_copy (
+-- Cria tabela de cópias de livros
+CREATE TABLE book_copies (
   id SERIAL PRIMARY KEY,
-  book_id INTEGER NOT NULL REFERENCES book(id) ON DELETE CASCADE,  
-  library_id INTEGER NOT NULL REFERENCES library(id) ON DELETE CASCADE,
+  book_id INTEGER NOT NULL REFERENCES books(id) ON DELETE CASCADE,  
+  library_id INTEGER NOT NULL REFERENCES libraries(id) ON DELETE CASCADE,
   acquisition_date DATE NOT NULL,
   status VARCHAR(20) NOT NULL DEFAULT 'available' CHECK (status IN ('available', 'loaned', 'maintenance', 'lost')),
-  location VARCHAR(50), -- localização física na biblioteca
+  location VARCHAR(50),
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE author (
+-- Cria tabela de autores
+CREATE TABLE authors (
   id SERIAL PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
@@ -56,30 +75,34 @@ CREATE TABLE author (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE book_author (
+-- Relaciona livros e autores
+CREATE TABLE book_authors (
   id SERIAL PRIMARY KEY,
-  author_id INTEGER NOT NULL REFERENCES author(id) ON DELETE CASCADE,
-  book_id INTEGER NOT NULL REFERENCES book(id) ON DELETE CASCADE,
+  author_id INTEGER NOT NULL REFERENCES authors(id) ON DELETE CASCADE,
+  book_id INTEGER NOT NULL REFERENCES books(id) ON DELETE CASCADE,
   UNIQUE (author_id, book_id)
 );
 
-CREATE TABLE category (
+-- Cria tabela de categorias
+CREATE TABLE categories (
   id SERIAL PRIMARY KEY,
   category VARCHAR(50) NOT NULL UNIQUE,
   description TEXT
 );
 
-CREATE TABLE book_category (
+-- Relaciona livros e categorias
+CREATE TABLE book_categories (
   id SERIAL PRIMARY KEY,
-  book_id INTEGER NOT NULL REFERENCES book(id) ON DELETE CASCADE,
-  category_id INTEGER NOT NULL REFERENCES category(id) ON DELETE RESTRICT,
+  book_id INTEGER NOT NULL REFERENCES books(id) ON DELETE CASCADE,
+  category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
   UNIQUE (book_id, category_id)
 );
 
-CREATE TABLE employee (
+-- Cria tabela de funcionários
+CREATE TABLE employees (
   id SERIAL PRIMARY KEY,
-  address_id INTEGER NOT NULL REFERENCES address(id) ON DELETE RESTRICT,
-  library_id INTEGER NOT NULL REFERENCES library(id) ON DELETE RESTRICT,
+  address_id INTEGER NOT NULL REFERENCES addresses(id) ON DELETE RESTRICT,
+  library_id INTEGER NOT NULL REFERENCES libraries(id) ON DELETE RESTRICT,
   name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   date_of_birth DATE NOT NULL,
@@ -94,9 +117,10 @@ CREATE TABLE employee (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE customer (
+-- Cria tabela de clientes
+CREATE TABLE customers (
   id SERIAL PRIMARY KEY,
-  address_id INTEGER NOT NULL REFERENCES address(id) ON DELETE RESTRICT,
+  address_id INTEGER NOT NULL REFERENCES addresses(id) ON DELETE RESTRICT,
   name VARCHAR(50) NOT NULL,
   last_name VARCHAR(50) NOT NULL,
   date_of_birth DATE NOT NULL,
@@ -108,10 +132,11 @@ CREATE TABLE customer (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE loan (
+-- Cria tabela de empréstimos
+CREATE TABLE loans (
   id SERIAL PRIMARY KEY,
-  employee_id INTEGER NOT NULL REFERENCES employee(id) ON DELETE RESTRICT,
-  customer_id INTEGER NOT NULL REFERENCES customer(id) ON DELETE RESTRICT,
+  employee_id INTEGER NOT NULL REFERENCES employees(id) ON DELETE RESTRICT,
+  customer_id INTEGER NOT NULL REFERENCES customers(id) ON DELETE RESTRICT,
   loan_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   due_date TIMESTAMP NOT NULL,
   return_date TIMESTAMP,
@@ -122,32 +147,12 @@ CREATE TABLE loan (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE loan_item (
+-- Cria tabela de itens de empréstimo
+CREATE TABLE loan_items (
   id SERIAL PRIMARY KEY,
-  book_copy_id INTEGER NOT NULL REFERENCES book_copy(id) ON DELETE RESTRICT,
-  loan_id INTEGER NOT NULL REFERENCES loan(id) ON DELETE CASCADE,
+  book_copy_id INTEGER NOT NULL REFERENCES book_copies(id) ON DELETE RESTRICT,
+  loan_id INTEGER NOT NULL REFERENCES loans(id) ON DELETE CASCADE,
   return_condition VARCHAR(50),
   UNIQUE (book_copy_id, loan_id)
 );
 
--- Índices para melhorar performance
-CREATE INDEX idx_book_title ON book(title);
-CREATE INDEX idx_author_name ON author(name, last_name);
-CREATE INDEX idx_loan_status ON loan(status);
-CREATE INDEX idx_book_copy_status ON book_copy(status);
-CREATE INDEX idx_customer_name ON customer(name, last_name);
-
--- Trigger para atualizar updated_at automaticamente
-CREATE OR REPLACE FUNCTION update_modified_column()
-RETURNS TRIGGER AS $$
-BEGIN
-   NEW.updated_at = now(); 
-   RETURN NEW;
-END;
-$$ language 'plpgsql';
-
--- Exemplo de aplicação do trigger (repita para outras tabelas)
-CREATE TRIGGER update_customer_modtime
-BEFORE UPDATE ON customer
-FOR EACH ROW
-EXECUTE FUNCTION update_modified_column();
