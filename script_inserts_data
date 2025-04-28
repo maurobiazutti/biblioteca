@@ -1,0 +1,116 @@
+-- Arquivo pronto para rodar: Iserir Dados na Biblioteca
+
+-- Inserts para address
+INSERT INTO addresses (number, street, city, state, cep, country) VALUES
+('123', 'Rua das Flores', 'São Paulo', 'SP', '01001-000', 'Brasil'),
+('456', 'Avenida Brasil', 'Rio de Janeiro', 'RJ', '20000-000', 'Brasil'),
+('789', 'Praça da Liberdade', 'Belo Horizonte', 'MG', '30140-010', 'Brasil'),
+('321', 'Rua Chile', 'Salvador', 'BA', '40020-000', 'Brasil'),
+('654', 'Avenida das Nações', 'Brasília', 'DF', '70000-000', 'Brasil');
+
+-- Inserts para libraries
+INSERT INTO libraries (address_id, fantasy_name, cnpj, phone, email) VALUES
+(1, 'Biblioteca Central', '00.000.000/0001-91', '11999999999', 'central@library.com'),
+(2, 'Biblioteca Zona Sul', '11.111.111/0001-81', '21999999999', 'zonasul@library.com'),
+(3, 'Biblioteca Norte', '22.222.222/0001-71', '31999999999', 'norte@library.com');
+
+-- Inserts para authors
+INSERT INTO authors (name, last_name, birth_date, nationality) VALUES
+('João', 'Silva', '1970-05-15', 'Brasileiro'),
+('Maria', 'Oliveira', '1980-08-25', 'Brasileira'),
+('Carlos', 'Santos', '1965-12-10', 'Brasileiro'),
+('Ana', 'Souza', '1990-03-22', 'Brasileira'),
+('Pedro', 'Pereira', '1975-11-30', 'Português'),
+('Laura', 'Costa', '1985-07-19', 'Brasileira'),
+('Paulo', 'Ferreira', '1992-01-10', 'Brasileiro'),
+('Fernanda', 'Almeida', '1988-09-14', 'Brasileira');
+
+-- Inserts para books
+INSERT INTO books (isbn, title, publisher, edition, release_date, language) VALUES
+('978-85-333-0227-1', 'O Segredo das Pedras', 'Editora A', '1ª', '2010-05-10', 'Português'),
+('978-85-333-0227-2', 'O Mar Invisível', 'Editora B', '2ª', '2015-08-12', 'Português'),
+('978-85-333-0227-3', 'As Montanhas Sonham', 'Editora C', '1ª', '2012-01-01', 'Português'),
+('978-85-333-0227-4', 'O Céu de Andrômeda', 'Editora A', '3ª', '2020-10-10', 'Português'),
+('978-85-333-0227-5', 'Reflexos do Amanhã', 'Editora B', '1ª', '2018-04-04', 'Português'),
+('978-85-333-0227-6', 'Horizontes Distantes', 'Editora D', '2ª', '2016-06-06', 'Português'),
+('978-85-333-0227-7', 'Noite Sem Fim', 'Editora E', '1ª', '2019-09-09', 'Português'),
+('978-85-333-0227-8', 'Asas do Tempo', 'Editora F', '2ª', '2014-02-02', 'Português'),
+('978-85-333-0227-9', 'O Mistério do Lago', 'Editora G', '1ª', '2017-07-07', 'Português'),
+('978-85-333-0227-0', 'Sombras e Luzes', 'Editora H', '3ª', '2013-03-03', 'Português');
+
+-- Inserts para book_copies
+INSERT INTO book_copies (book_id, library_id, acquisition_date, status, location) VALUES
+(1, 1, '2021-01-01', 'available', 'Estante A1'),
+(2, 1, '2021-01-02', 'available', 'Estante A2'),
+(3, 2, '2021-01-03', 'available', 'Estante B1'),
+(4, 2, '2021-01-04', 'available', 'Estante B2'),
+(5, 2, '2021-01-05', 'loaned', 'Estante B3'),
+(6, 3, '2021-01-06', 'maintenance', 'Estante C1'),
+(7, 3, '2021-01-07', 'available', 'Estante C2'),
+(8, 1, '2021-01-08', 'lost', 'Estante A3'),
+(9, 1, '2021-01-09', 'available', 'Estante A4'),
+(10,2, '2021-01-10', 'available', 'Estante B4'),
+(1, 3, '2021-02-01', 'available', 'Estante C3'),
+(2, 3, '2021-02-02', 'loaned', 'Estante C4'),
+(3, 1, '2021-02-03', 'available', 'Estante A5'),
+(4, 1, '2021-02-04', 'available', 'Estante A6'),
+(5, 1, '2021-02-05', 'available', 'Estante A7'),
+(6, 2, '2021-02-06', 'available', 'Estante B5'),
+(7, 2, '2021-02-07', 'available', 'Estante B6'),
+(8, 2, '2021-02-08', 'available', 'Estante B7'),
+(9, 3, '2021-02-09', 'available', 'Estante C5'),
+(10,3, '2021-02-10', 'available', 'Estante C6');
+
+-- Inserts para categories
+INSERT INTO categories (category, description) VALUES
+('Ficção Científica', 'Livros de ficção com temas científicos'),
+('Romance', 'Histórias de amor e relações'),
+('Fantasia', 'Mundos imaginários e mágicos'),
+('Suspense', 'Narrativas de mistério e tensão'),
+('Terror', 'Histórias assustadoras'),
+('História', 'Livros sobre eventos históricos'),
+('Biografia', 'Histórias de vidas reais'),
+('Autoajuda', 'Livros de desenvolvimento pessoal');
+
+-- Inserts para employees
+INSERT INTO employees (address_id, library_id, name, last_name, date_of_birth, cpf, registration, phone, email, date_of_admission, position) VALUES
+(1, 1, 'Lucas', 'Martins', '1990-01-01', '000.000.000-01', 'REG001', '11988887777', 'lucas@library.com', '2020-01-01', 'Bibliotecário'),
+(2, 1, 'Amanda', 'Ribeiro', '1988-05-05', '000.000.000-02', 'REG002', '11988887778', 'amanda@library.com', '2020-02-01', 'Auxiliar'),
+(3, 2, 'Bruno', 'Souza', '1992-09-09', '000.000.000-03', 'REG003', '21988887779', 'bruno@library.com', '2020-03-01', 'Gerente'),
+(4, 3, 'Juliana', 'Pereira', '1985-07-07', '000.000.000-04', 'REG004', '31988887770', 'juliana@library.com', '2020-04-01', 'Bibliotecária'),
+(5, 2, 'Eduardo', 'Fernandes', '1980-12-12', '000.000.000-05', 'REG005', '21988887771', 'eduardo@library.com', '2020-05-01', 'Segurança');
+
+-- Inserts para customers
+INSERT INTO customers (address_id, name, last_name, date_of_birth, cpf, phone, email) VALUES
+(3, 'Mariana', 'Alves', '1995-02-02', '111.111.111-11', '11977776666', 'mariana@cliente.com'),
+(4, 'Gabriel', 'Costa', '1993-03-03', '222.222.222-22', '21977776667', 'gabriel@cliente.com'),
+(5, 'Isabela', 'Rocha', '1996-04-04', '333.333.333-33', '31977776668', 'isabela@cliente.com'),
+(1, 'Felipe', 'Mendes', '1991-05-05', '444.444.444-44', '41977776669', 'felipe@cliente.com'),
+(2, 'Larissa', 'Nascimento', '1994-06-06', '555.555.555-55', '51977776670', 'larissa@cliente.com'),
+(3, 'Tiago', 'Almeida', '1997-07-07', '666.666.666-66', '61977776671', 'tiago@cliente.com'),
+(4, 'Carla', 'Barbosa', '1998-08-08', '777.777.777-77', '71977776672', 'carla@cliente.com'),
+(5, 'Renan', 'Dias', '1999-09-09', '888.888.888-88', '81977776673', 'renan@cliente.com'),
+(1, 'Vitória', 'Freitas', '1992-10-10', '999.999.999-99', '91977776674', 'vitoria@cliente.com'),
+(2, 'André', 'Gonçalves', '1990-11-11', '000.111.222-33', '11977776675', 'andre@cliente.com');
+
+-- Inserts para loans
+INSERT INTO loans (employee_id, customer_id, due_date) VALUES
+(1, 1, '2025-05-10'),
+(2, 2, '2025-05-12'),
+(3, 3, '2025-05-14'),
+(4, 4, '2025-05-16'),
+(5, 5, '2025-05-18');
+
+-- Inserts para loan_items
+INSERT INTO loan_items (book_copy_id, loan_id, return_condition) VALUES
+(1, 1, 'bom estado'),
+(2, 1, 'bom estado'),
+(3, 2, 'bom estado'),
+(4, 2, 'bom estado'),
+(5, 3, 'marcado'),
+(6, 3, 'bom estado'),
+(7, 4, 'amassado'),
+(8, 4, 'bom estado'),
+(9, 5, 'bom estado'),
+(10,5, 'bom estado');
+
